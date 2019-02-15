@@ -20,7 +20,7 @@ defmodule Stripe.WebhookTest do
   end
 
   test "payload with a valid signature should return event" do
-    timestamp = System.system_time(:seconds)
+    timestamp = System.system_time(:second)
     payload = @payload
     signature = generate_signature(timestamp, payload)
     signature_header = create_signature_header(timestamp, @valid_scheme, signature)
@@ -34,7 +34,8 @@ defmodule Stripe.WebhookTest do
     signature = generate_signature(timestamp, payload)
     signature_header = create_signature_header(timestamp, @valid_scheme, signature)
 
-    assert {:error, %Stripe.SignatureVerificationError{}} = Webhook.construct_event(payload, signature_header, @secret)
+    assert {:error, %Stripe.SignatureVerificationError{}} =
+             Webhook.construct_event(payload, signature_header, @secret)
   end
 
   test "payload with expired timestamp should fail" do
@@ -43,33 +44,37 @@ defmodule Stripe.WebhookTest do
     signature = generate_signature(timestamp, payload)
     signature_header = create_signature_header(timestamp, @valid_scheme, signature)
 
-    assert {:error, %Stripe.SignatureVerificationError{}} = Webhook.construct_event(payload, signature_header, @secret)
+    assert {:error, %Stripe.SignatureVerificationError{}} =
+             Webhook.construct_event(payload, signature_header, @secret)
   end
 
   test "payload with an invalid signature should fail" do
-    timestamp = System.system_time(:seconds)
+    timestamp = System.system_time(:second)
     payload = @payload
     signature = generate_signature(timestamp, "random")
     signature_header = create_signature_header(timestamp, @valid_scheme, signature)
 
-    assert {:error, %Stripe.SignatureVerificationError{}} = Webhook.construct_event(payload, signature_header, @secret)
+    assert {:error, %Stripe.SignatureVerificationError{}} =
+             Webhook.construct_event(payload, signature_header, @secret)
   end
 
   test "payload with wrong secret should fail" do
-    timestamp = System.system_time(:seconds)
+    timestamp = System.system_time(:second)
     payload = @payload
     signature = generate_signature(timestamp, payload, "wrong")
     signature_header = create_signature_header(timestamp, @valid_scheme, signature)
 
-    assert {:error, %Stripe.SignatureVerificationError{}} = Webhook.construct_event(payload, signature_header, @secret)
+    assert {:error, %Stripe.SignatureVerificationError{}} =
+             Webhook.construct_event(payload, signature_header, @secret)
   end
 
   test "payload with missing signature scheme should fail" do
-    timestamp = System.system_time(:seconds)
+    timestamp = System.system_time(:second)
     payload = @payload
     signature = generate_signature(timestamp, payload)
     signature_header = create_signature_header(timestamp, @invalid_scheme, signature)
 
-    assert {:error, %Stripe.SignatureVerificationError{}} = Webhook.construct_event(payload, signature_header, @secret)
+    assert {:error, %Stripe.SignatureVerificationError{}} =
+             Webhook.construct_event(payload, signature_header, @secret)
   end
 end
