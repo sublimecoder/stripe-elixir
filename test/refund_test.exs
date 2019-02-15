@@ -22,7 +22,6 @@ defmodule Stripe.RefundTest do
   end
 
   test "list all refunds" do
-    assert {:ok, %{"object" => "list", "url" => "/v1/refunds"}} =
-             Refund.list()
+    assert {:ok, %{"object" => "list", "url" => "/v1/refunds"}} = Refund.list()
   end
 end

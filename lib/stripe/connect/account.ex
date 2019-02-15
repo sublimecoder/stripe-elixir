@@ -7,9 +7,9 @@ defmodule Stripe.Account do
     Stripe.request(:post, "#{endpoint()}/#{account_id}/reject", [reason: reason], opts)
   end
 
-  def external_account_endpoint(account_id, external_account_id \\ "") do 
+  def external_account_endpoint(account_id, external_account_id \\ "") do
     "#{endpoint()}/#{account_id}/external_accounts/#{external_account_id}"
-  end 
+  end
 
   def create_external_account(account_id, [external_account: token_id], opts \\ []) do
     url = external_account_endpoint(account_id)

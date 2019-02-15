@@ -12,11 +12,12 @@ defmodule Stripe.TokenTest do
   end
 
   test "card error" do
-    assert {:error, %CardError{param: "number", code: "incorrect_number"}} = TokenFixture.invalid_card() |> Token.create()
+    assert {:error, %CardError{param: "number", code: "incorrect_number"}} =
+             TokenFixture.invalid_card() |> Token.create()
   end
 
   test "retrieve a token" do
-    assert {:error, %InvalidRequestError{message: "No such token: not exist"}}
-      = Token.retrieve("not exist")
+    assert {:error, %InvalidRequestError{message: "No such token: not exist"}} =
+             Token.retrieve("not exist")
   end
 end

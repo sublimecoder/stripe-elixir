@@ -68,6 +68,11 @@ defmodule Stripe.Customer do
   end
 
   def verify_bank_account(customer_id, bank_acct_id, amounts, opts \\ []) do
-    Stripe.request(:post, "#{endpoint()}/#{customer_id}/sources/#{bank_acct_id}/verify", [amounts: amounts], opts)
+    Stripe.request(
+      :post,
+      "#{endpoint()}/#{customer_id}/sources/#{bank_acct_id}/verify",
+      [amounts: amounts],
+      opts
+    )
   end
 end

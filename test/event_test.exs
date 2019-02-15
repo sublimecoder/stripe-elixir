@@ -5,12 +5,12 @@ defmodule Stripe.EventTest do
   alias Stripe.InvalidRequestError
 
   test "retrieve an event" do
-    assert {:error, %InvalidRequestError{message: "No such event: not exist"}}
-      = Event.retrieve("not exist")
+    assert {:error, %InvalidRequestError{message: "No such event: not exist"}} =
+             Event.retrieve("not exist")
   end
 
   test "list all events" do
-    assert {:ok, %{"object" => "list", "url" => "/v1/events"}}
-      = Event.list
+    assert {:ok, %{"object" => "list", "url" => "/v1/events"}} =
+             Event.list()
   end
 end

@@ -4,20 +4,22 @@ defmodule Stripe do
   """
 
   @default_api_endpoint "https://api.stripe.com/v1/"
-  @client_version Mix.Project.config[:version]
+  @client_version Mix.Project.config()[:version]
 
   def version do
     @client_version
   end
 
-  alias Stripe.{APIConnectionError,
-                APIError,
-                AuthenticationError,
-                CardError,
-                InvalidRequestError,
-                RateLimitError}
+  alias Stripe.{
+    APIConnectionError,
+    APIError,
+    AuthenticationError,
+    CardError,
+    InvalidRequestError,
+    RateLimitError
+  }
 
-  @missing_secret_key_error_message"""
+  @missing_secret_key_error_message """
     The secret_key settings is required to use stripe. Please include your
     stripe secret api key in your application config file like so:
 
@@ -29,15 +31,15 @@ defmodule Stripe do
   """
 
   defp get_secret_key do
-    System.get_env("STRIPE_SECRET_KEY") || 
-    Application.get_env(:stripe, :secret_key) || 
-    raise AuthenticationError, message: @missing_secret_key_error_message
+    System.get_env("STRIPE_SECRET_KEY") ||
+      Application.get_env(:stripe, :secret_key) ||
+      raise AuthenticationError, message: @missing_secret_key_error_message
   end
 
   defp get_api_endpoint do
-    System.get_env("STRIPE_API_ENDPOINT") || 
-    Application.get_env(:stripe, :api_endpoint) || 
-    @default_api_endpoint
+    System.get_env("STRIPE_API_ENDPOINT") ||
+      Application.get_env(:stripe, :api_endpoint) ||
+      @default_api_endpoint
   end
 
   defp request_url(endpoint) do
@@ -55,13 +57,14 @@ defmodule Stripe do
   end
 
   defp create_headers(opts) do
-    headers = 
-      [{"Authorization", "Bearer #{get_secret_key()}"},
-       {"User-Agent", "Stripe/v1 stripe-elixir/#{@client_version}"},
-       {"Content-Type", "application/x-www-form-urlencoded"}]
+    headers = [
+      {"Authorization", "Bearer #{get_secret_key()}"},
+      {"User-Agent", "Stripe/v1 stripe-elixir/#{@client_version}"},
+      {"Content-Type", "application/x-www-form-urlencoded"}
+    ]
 
-    case Keyword.get(opts, :stripe_account) do 
-      nil -> headers 
+    case Keyword.get(opts, :stripe_account) do
+      nil -> headers
       account_id -> [{"Stripe-Account", account_id} | headers]
     end
   end
@@ -76,7 +79,8 @@ defmodule Stripe do
   end
 
   defp handle_response({:ok, %{body: body, status_code: code}}) do
-    %{"message" => message} = error =
+    %{"message" => message} =
+      error =
       body
       |> process_response_body
       |> Map.fetch!("error")
@@ -85,12 +89,16 @@ defmodule Stripe do
       case code do
         code when code in [400, 404] ->
           %InvalidRequestError{message: message, param: error["param"]}
+
         401 ->
           %AuthenticationError{message: message}
+
         402 ->
           %CardError{message: message, code: error["code"], param: error["param"]}
+
         429 ->
           %RateLimitError{message: message}
+
         _ ->
           %APIError{message: message}
       end
@@ -103,6 +111,6 @@ defmodule Stripe do
   end
 
   defp process_response_body(body) do
-    Poison.decode! body
+    Poison.decode!(body)
   end
 end

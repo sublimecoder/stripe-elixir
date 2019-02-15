@@ -5,12 +5,12 @@ defmodule Stripe.BalanceTransactionTest do
   alias Stripe.InvalidRequestError
 
   test "retrieve a balance transaction" do
-    assert {:error, %InvalidRequestError{message: "No such balance transaction: not exist"}}
-      = BalanceTransaction.retrieve("not exist")
+    assert {:error, %InvalidRequestError{message: "No such balance transaction: not exist"}} =
+             BalanceTransaction.retrieve("not exist")
   end
 
   test "list all balance transaction" do
-    assert {:ok, %{"object" => "list", "url" => "/v1/balance/history"}}
-      = BalanceTransaction.all
+    assert {:ok, %{"object" => "list", "url" => "/v1/balance/history"}} =
+             BalanceTransaction.all()
   end
 end

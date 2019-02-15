@@ -1,15 +1,16 @@
-defmodule Stripe.Connect do 
-  @moduledoc"""
+defmodule Stripe.Connect do
+  @moduledoc """
   Functions related to Connect
   """
 
   @oauth_url "https://connect.stripe.com/oauth/authorize"
 
-  @spec authorize_url(Keyword.t) :: binary
-  def authorize_url(opts \\ []) do 
+  @spec authorize_url(Keyword.t()) :: binary
+  def authorize_url(opts \\ []) do
     client_id = Keyword.get(opts, :client_id) || get_client_id()
-    query_params = 
-      opts 
+
+    query_params =
+      opts
       |> Keyword.put_new(:client_id, client_id)
       |> Keyword.put_new(:scope, "read_write")
       |> Keyword.put_new(:response_type, "code")
@@ -32,9 +33,9 @@ defmodule Stripe.Connect do
       Stripe.Connect.authorize_url(client_id: <YOUR_CLIENT_ID>)
   """
 
-  defp get_client_id do 
-    System.get_env("STRIPE_CLIENT_ID") || 
-    Application.get_env(:stripe, :client_id) || 
-    raise Stripe.AuthenticationError, message: @missing_client_id_error_message
+  defp get_client_id do
+    System.get_env("STRIPE_CLIENT_ID") ||
+      Application.get_env(:stripe, :client_id) ||
+      raise Stripe.AuthenticationError, message: @missing_client_id_error_message
   end
 end

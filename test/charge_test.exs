@@ -5,17 +5,17 @@ defmodule Stripe.ChargeTest do
   alias Stripe.InvalidRequestError
 
   test "create a charge" do
-    assert {:error, %InvalidRequestError{message: "Must provide source or customer."}}
-      = Charge.create([])
+    assert {:error, %InvalidRequestError{message: "Must provide source or customer."}} =
+             Charge.create([])
   end
 
   test "retrieve a charge" do
-    assert {:error, %InvalidRequestError{message: "No such charge: not exist"}}
-      = Charge.retrieve("not exist")
+    assert {:error, %InvalidRequestError{message: "No such charge: not exist"}} =
+             Charge.retrieve("not exist")
   end
 
   test "list all charges" do
-    assert {:ok, %{"object" => "list", "url" => "/v1/charges"}}
-      = Charge.list
+    assert {:ok, %{"object" => "list", "url" => "/v1/charges"}} =
+             Charge.list()
   end
 end

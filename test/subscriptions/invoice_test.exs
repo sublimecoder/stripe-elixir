@@ -10,10 +10,13 @@ defmodule Stripe.InvoiceTest do
 
     Customer.create_card(customer["id"], card["id"])
 
-    {:ok, _invoice_item} = InvoiceItem.create(customer: customer["id"],
-                                             amount: 100,
-                                             currency: "usd",
-                                             description: "invoice test")
+    {:ok, _invoice_item} =
+      InvoiceItem.create(
+        customer: customer["id"],
+        amount: 100,
+        currency: "usd",
+        description: "invoice test"
+      )
 
     {:ok, invoice} = Invoice.create(customer: customer["id"])
 
@@ -23,6 +26,7 @@ defmodule Stripe.InvoiceTest do
   test "create an invoice", %{invoice: invoice} do
     assert %{"amount_due" => _} = invoice
   end
+
   #
   test "retrive an invoice", %{invoice: %{"id" => invoice_id}} do
     assert {:ok, %{"id" => ^invoice_id}} = Invoice.retrieve(invoice_id)
@@ -30,7 +34,7 @@ defmodule Stripe.InvoiceTest do
 
   test "update an invoice", %{invoice: invoice} do
     assert {:ok, %{"metadata" => %{"key" => "value"}}} =
-      Invoice.update(invoice["id"], metadata: [key: "value"])
+             Invoice.update(invoice["id"], metadata: [key: "value"])
   end
 
   test "pay an invoice", %{invoice: invoice} do
@@ -38,11 +42,12 @@ defmodule Stripe.InvoiceTest do
   end
 
   test "list all invoices" do
-    assert {:ok, %{"object" => "list", "url" => "/v1/invoices"}} = Invoice.list
+    assert {:ok, %{"object" => "list", "url" => "/v1/invoices"}} = Invoice.list()
   end
 
   test "retrieve upcoming invoices for a customer", %{customer: %{"id" => cus_id}} do
-    assert {:error, %Stripe.InvalidRequestError{message: "No upcoming invoices for customer: " <> ^cus_id}} =
-      Invoice.upcoming(customer: cus_id)
+    assert {:error,
+            %Stripe.InvalidRequestError{message: "No upcoming invoices for customer: " <> ^cus_id}} =
+             Invoice.upcoming(customer: cus_id)
   end
 end
