@@ -40,7 +40,7 @@ defmodule Stripe.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 1.5"},
-      {:poison, "~> 2.2 or ~> 3.0"},
+      {:poison, "~> 2.2 or ~> 3.0 or ~> 4.0"},
 
       # Docs
       {:ex_doc, "~> 0.18.0", only: :dev},
