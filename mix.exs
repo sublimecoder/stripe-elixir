@@ -44,7 +44,7 @@ defmodule Stripe.Mixfile do
 
       # Docs
       {:ex_doc, "~> 0.18.0", only: :dev},
-      {:earmark, "~> 1.2.0", only: :dev},
+      {:earmark, "~> 1.4.8", only: :dev},
       {:inch_ex, ">= 0.0.0", only: :dev}
     ]
   end
