@@ -43,7 +43,7 @@ defmodule Stripe.Mixfile do
       {:poison, "~> 2.2 or ~> 3.0"},
 
       # Docs
-      {:ex_doc, "~> 0.18.0", only: :dev},
+      {:ex_doc, "~> 0.23.0", only: :dev},
       {:earmark, "~> 1.2.0", only: :dev},
       {:inch_ex, ">= 0.0.0", only: :dev}
     ]
