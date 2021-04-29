@@ -1,0 +1,15 @@
+version: 2
+updates:
+- package-ecosystem: mix
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "11:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: earmark
+    versions:
+    - 1.4.13
+  - dependency-name: httpoison
+    versions:
+    - 1.7.0
